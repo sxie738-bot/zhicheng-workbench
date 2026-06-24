@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>致城酒店 · 员工工作台</title>
+<style>
+:root {
+  --amber: #D4A017;
+  --amber-light: #F5E6C8;
+  --green: #1B4332;
+  --green-light: #2D6A4F;
+  --green-bg: #E8F5E9;
+  --gray: #6B7280;
+  --gray-light: #F3F4F6;
+  --gray-border: #E5E7EB;
+  --white: #FFFFFF;
+  --shadow: 0 2px 8px rgba(0,0,0,0.08);
+  --shadow-hover: 0 4px 16px rgba(0,0,0,0.12);
+  --radius: 12px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+  background: var(--gray-light);
+  color: #1F2937;
+  line-height: 1.5;
+  padding-bottom: 40px;
+}
+/* Header */
+.header {
+  background: linear-gradient(135deg, var(--green) 0%, var(--green-light) 100%);
+  color: white;
+  padding: 20px 16px 24px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 12px rgba(27,67,50,0.2);
+}
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+.header-logo .icon {
+  font-size: 28px;
+}
+.header h1 {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+.header p {
+  font-size: 12px;
+  opacity: 0.8;
+  margin-left: 38px;
+}
+/* Section */
+.section {
+  margin: 20px 16px 0;
+}
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--green);
+  margin-bottom: 12px;
+  padding-left: 4px;
+}
+.section-title .emoji {
+  font-size: 18px;
+}
+.section-title .count {
+  font-size: 12px;
+  color: var(--gray);
+  font-weight: 400;
+  margin-left: auto;
+}
+/* Card Grid */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+@media (min-width: 480px) {
+  .card-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (min-width: 768px) {
+  .card-grid { grid-template-columns: repeat(4, 1fr); }
+}
+@media (min-width: 1024px) {
+  .card-grid { grid-template-columns: repeat(5, 1fr); }
+}
+/* Card */
+.card {
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 16px 12px;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  box-shadow: var(--shadow);
+  transition: all 0.2s ease;
+  border: 1px solid var(--gray-border);
+  position: relative;
+  overflow: hidden;
+  min-height: 120px;
+  justify-content: center;
+}
+.card:hover, .card:active {
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-2px);
+  border-color: var(--amber);
+}
+.card.disabled {
+  opacity: 0.55;
+  pointer-events: none;
+}
+.card .card-icon {
+  font-size: 32px;
+  margin-bottom: 8px;
+  line-height: 1;
+}
+.card .card-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #1F2937;
+  margin-bottom: 4px;
+  line-height: 1.3;
+}
+.card .card-desc {
+  font-size: 11px;
+  color: var(--gray);
+  line-height: 1.4;
+}
+.card .badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: 9px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+.badge-online {
+  background: var(--green-bg);
+  color: var(--green);
+}
+.badge-soon {
+  background: #FEF3C7;
+  color: #92400E;
+}
+/* Placeholder card */
+.card-placeholder {
+  border-style: dashed;
+  border-color: #D1D5DB;
+  background: #FAFAFA;
+}
+.card-placeholder .card-icon {
+  opacity: 0.5;
+}
+/* Role filter */
+.role-filter {
+  display: flex;
+  gap: 8px;
+  margin: 16px 16px 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.role-filter::-webkit-scrollbar { display: none; }
+.role-btn {
+  flex-shrink: 0;
+  padding: 6px 16px;
+  border-radius: 20px;
+  border: 1.5px solid var(--gray-border);
+  background: white;
+  font-size: 13px;
+  color: var(--gray);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.role-btn.active {
+  background: var(--green);
+  color: white;
+  border-color: var(--green);
+}
+/* Footer */
+.footer {
+  text-align: center;
+  margin-top: 32px;
+  padding: 20px 16px;
+  font-size: 12px;
+  color: var(--gray);
+}
+.footer a {
+  color: var(--green-light);
+  text-decoration: none;
+}
+/* Quick action bar (bottom) */
+.quick-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  border-top: 1px solid var(--gray-border);
+  display: flex;
+  justify-content: space-around;
+  padding: 8px 0;
+  z-index: 100;
+  box-shadow: 0 -2px 12px rgba(0,0,0,0.06);
+}
+.quick-bar a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  text-decoration: none;
+  color: var(--gray);
+  font-size: 10px;
+  padding: 4px 12px;
+}
+.quick-bar a.active {
+  color: var(--green);
+}
+.quick-bar .qb-icon {
+  font-size: 20px;
+}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div class="header-logo">
+    <span class="icon">🏨</span>
+    <h1>致城酒店 · 员工工作台</h1>
+  </div>
+  <p>标准化流程 · 实时自查 · 数据驱动</p>
+</div>
+
+<!-- Role Filter -->
+<div class="role-filter">
+  <div class="role-btn active" onclick="filterRole('all')">全部</div>
+  <div class="role-btn" onclick="filterRole('front')">前台</div>
+  <div class="role-btn" onclick="filterRole('room')">客房</div>
+  <div class="role-btn" onclick="filterRole('eng')">工程</div>
+  <div class="role-btn" onclick="filterRole('mgr')">管理</div>
+</div>
+
+<!-- Section 1: 日常操作 -->
+<div class="section" data-section="daily">
+  <div class="section-title">
+    <span class="emoji">🔧</span>
+    <span>日常操作</span>
+    <span class="count">5 个工具</span>
+  </div>
+  <div class="card-grid">
+    <a class="card" data-role="front" href="https://712ea44d3c554848a5b6e8cdeabf308e.app.codebuddy.work" target="_blank">
+      <span class="badge badge-online">已上线</span>
+      <div class="card-icon">🛎️</div>
+      <div class="card-title">前台接待流程</div>
+      <div class="card-desc">入住办理·话术·痛点转化</div>
+    </a>
+    <a class="card" data-role="room" href="https://513f814de6ca40f9babc051b6166487a.app.codebuddy.work" target="_blank">
+      <span class="badge badge-online">已上线</span>
+      <div class="card-icon">🧹</div>
+      <div class="card-title">客房清洁流程</div>
+      <div class="card-desc">15项清洁标准·备品检查</div>
+    </a>
+    <a class="card" data-role="room" href="https://30803a7b8b5d455b8e159597aee17945.app.codebuddy.work" target="_blank">
+      <span class="badge badge-online">已上线</span>
+      <div class="card-icon">📸</div>
+      <div class="card-title">保洁品控流程</div>
+      <div class="card-desc">8张关键点位·抽查机制</div>
+    </a>
+    <a class="card" data-role="eng" href="https://ba69dcc88ec34ad6b08d000716f3cce7.app.codebuddy.work" target="_blank">
+      <span class="badge badge-online">已上线</span>
+      <div class="card-icon">🔧</div>
+      <div class="card-title">工程维修流程</div>
+      <div class="card-desc">维修边界·TITA工单·验收</div>
+    </a>
+    <a class="card" data-role="room" href="https://79bca133ffdf4525a9f47ab63d1049e4.app.codebuddy.work" target="_blank">
+      <span class="badge badge-online">已上线</span>
+      <div class="card-icon">✅</div>
+      <div class="card-title">查房标准</div>
+      <div class="card-desc">13步查房·计划卫生·评分</div>
+    </a>
+  </div>
+</div>
+
+<!-- Section 2: 管理工具 -->
+<div class="section" data-section="manage">
+  <div class="section-title">
+    <span class="emoji">📊</span>
+    <span>管理工具</span>
+    <span class="count">5 个工具</span>
+  </div>
+  <div class="card-grid">
+    <a class="card" data-role="mgr" href="https://1f73de3321b44a498ad305d2b28b3238.app.codebuddy.work" target="_blank">
+      <span class="badge badge-online">已上线</span>
+      <div class="card-icon">🔍</div>
+      <div class="card-title">SOP检查机制</div>
+      <div class="card-desc">4层检查·42项清单·指标库</div>
+    </a>
+    <a class="card" data-role="mgr" href="https://42aa0b5db8a74a6080ddc9c9f369699c.app.codebuddy.work" target="_blank">
+      <span class="badge badge-online">已上线</span>
+      <div class="card-icon">📈</div>
+      <div class="card-title">经营复盘会</div>
+      <div class="card-desc">日周月季四级·模板·AI助手</div>
+    </a>
+    <a class="card" data-role="mgr" href="https://9971d4de700f46dd98d7c7f2b295e758.app.codebuddy.work" target="_blank">
+      <span class="badge badge-online">已上线</span>
+      <div class="card-icon">💰</div>
+      <div class="card-title">收益管理流程</div>
+      <div class="card-desc">定价策略·渠道管理·数据</div>
+    </a>
+    <a class="card" data-role="front" href="https://15df39baab0043afb1b2ee4070844f73.app.codebuddy.work" target="_blank">
+      <span class="badge badge-online">已上线</span>
+      <div class="card-icon">😤</div>
+      <div class="card-title">客诉处理流程</div>
+      <div class="card-desc">投诉响应·升级机制·闭环</div>
+    </a>
+    <a class="card" data-role="mgr" href="https://0bbd5db529a4434a841965500d84bb73.app.codebuddy.work" target="_blank">
+      <span class="badge badge-online">已上线</span>
+      <div class="card-icon">🤝</div>
+      <div class="card-title">九岗协同作战</div>
+      <div class="card-desc">9岗位协作·共享KR·节奏表</div>
+    </a>
+  </div>
+</div>
+
+<!-- Section 3: 数据提交 -->
+<div class="section" data-section="submit">
+  <div class="section-title">
+    <span class="emoji">📝</span>
+    <span>数据提交</span>
+    <span class="count">即将开通</span>
+  </div>
+  <div class="card-grid">
+    <div class="card card-placeholder disabled" data-role="room">
+      <span class="badge badge-soon">即将开通</span>
+      <div class="card-icon">📷</div>
+      <div class="card-title">保洁拍照上传</div>
+      <div class="card-desc">8张关键点位拍照提交</div>
+    </div>
+    <div class="card card-placeholder disabled" data-role="room">
+      <span class="badge badge-soon">即将开通</span>
+      <div class="card-icon">📋</div>
+      <div class="card-title">查房自检提交</div>
+      <div class="card-desc">42项打勾完成提交记录</div>
+    </div>
+    <div class="card card-placeholder disabled" data-role="eng">
+      <span class="badge badge-soon">即将开通</span>
+      <div class="card-icon">⚡</div>
+      <div class="card-title">工单提报</div>
+      <div class="card-desc">故障描述·位置·照片</div>
+    </div>
+  </div>
+</div>
+
+<!-- Section 4: 数据看板 -->
+<div class="section" data-section="dashboard">
+  <div class="section-title">
+    <span class="emoji">📊</span>
+    <span>数据看板</span>
+    <span class="count">即将开通</span>
+  </div>
+  <div class="card-grid">
+    <div class="card card-placeholder disabled" data-role="mgr">
+      <span class="badge badge-soon">即将开通</span>
+      <div class="card-icon">🏨</div>
+      <div class="card-title">门店完成率</div>
+      <div class="card-desc">各店打卡·自查·提交率</div>
+    </div>
+    <div class="card card-placeholder disabled" data-role="mgr">
+      <span class="badge badge-soon">即将开通</span>
+      <div class="card-icon">🎯</div>
+      <div class="card-title">检查合格率</div>
+      <div class="card-desc">SOP检查·飞检·抽查</div>
+    </div>
+    <div class="card card-placeholder disabled" data-role="mgr">
+      <span class="badge badge-soon">即将开通</span>
+      <div class="card-icon">⏱️</div>
+      <div class="card-title">工单处理时效</div>
+      <div class="card-desc">响应时间·闭环周期</div>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  <p>致城酒店 · 标准化运营工作台 V1.0</p>
+  <p style="margin-top:4px;">由致城酒店咨询团队搭建 · 后台数据对接企微智能表格</p>
+</div>
+
+<!-- Quick Action Bar -->
+<div class="quick-bar">
+  <a href="javascript:void(0)" class="active" onclick="scrollToTop()">
+    <span class="qb-icon">🏠</span>
+    <span>首页</span>
+  </a>
+  <a href="javascript:void(0)" onclick="scrollToSection('daily')">
+    <span class="qb-icon">🔧</span>
+    <span>操作</span>
+  </a>
+  <a href="javascript:void(0)" onclick="scrollToSection('manage')">
+    <span class="qb-icon">📊</span>
+    <span>管理</span>
+  </a>
+  <a href="javascript:void(0)" onclick="scrollToSection('submit')">
+    <span class="qb-icon">📝</span>
+    <span>提交</span>
+  </a>
+</div>
+
+<script>
+function filterRole(role) {
+  document.querySelectorAll('.role-btn').forEach(btn => btn.classList.remove('active'));
+  event.target.classList.add('active');
+
+  if (role === 'all') {
+    document.querySelectorAll('.card').forEach(c => c.style.display = '');
+    document.querySelectorAll('.section').forEach(s => s.style.display = '');
+    return;
+  }
+
+  // Show only matching cards
+  document.querySelectorAll('.card').forEach(c => {
+    const cardRole = c.dataset.role;
+    if (cardRole === role) {
+      c.style.display = '';
+    } else {
+      c.style.display = 'none';
+    }
+  });
+
+  // Hide sections with no visible cards
+  document.querySelectorAll('.section').forEach(s => {
+    const visible = s.querySelectorAll('.card:not([style*="display: none"])');
+    s.style.display = visible.length > 0 ? '' : 'none';
+  });
+}
+
+function scrollToTop() {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function scrollToSection(section) {
+  const map = { daily: 'daily', manage: 'manage', submit: 'submit' };
+  const el = document.querySelector(`[data-section="${map[section]}"]`);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+</script>
+
+</body>
+</html>
